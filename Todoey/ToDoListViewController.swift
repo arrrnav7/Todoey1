@@ -12,9 +12,15 @@ class ToDoListViewController: UITableViewController {
     var itemArray = ["Find Tommy"
         ,"Bring Him To The Ship"
         ,"Make Him Evil And Give Him The Green Ranger Power"]
-    override func viewDidLoad() {
+         let defaults = UserDefaults.standard
+         override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+            
+            if let items = defaults.array(forKey: "TodoListArray") as? [String]{
+                itemArray = items
+            }
+            
+            // Do any additional setup after loading the view.
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
@@ -38,10 +44,15 @@ tableView.deselectRow(at: indexPath, animated: true)
       
         var textField = UITextField()
         
+   
+        
         let alert = UIAlertController(title: "Add New Todoey Item", message:"", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
            self.itemArray.append(textField.text!)
+            
+            self.defaults.set(self.itemArray, forKey: "TodoListArray")
+            
             self.tableView.reloadData()
         }
         
